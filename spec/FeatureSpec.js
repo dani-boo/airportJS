@@ -18,4 +18,24 @@ describe('Feature Test:', function() {
     plane.land(airport);
     expect(airport.planes()).toContain(plane);
   });
+
+  // USER STORY 2
+  // As an air traffic controller
+  // To ensure safety
+  // I want to prevent takeoff when weather is stormy
+  it('denies takeoff when weather is stormy', function() {
+    plane.land(airport);
+    spyOn(airport, 'isStormy').and.returnValue(true);
+    expect(function() { plane.takeoff(); }).toThrowError('cannot take off during storm');
+    expect(airport.planes()).toContain(plane);
+  })
+
+  // USER STORY 3
+  // As an air traffic controller
+  // To ensure safety
+  // I want to prevent landing when weather is stormy
+  // it('denies landing when weather is stormy', function() {
+  //   plane.takeoff(airport);
+  //   expect(airport.planes()).toNotContain(plane);
+  // })
 });
