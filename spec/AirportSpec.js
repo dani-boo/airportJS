@@ -3,36 +3,50 @@
 describe('Airport', function() {
   var airport;
   var plane;
+  var weather;
+  
   beforeEach(function() {
-    airport = new Airport();
     plane = jasmine.createSpy('plane',['land']);
+    weather = jasmine.createSpyObj('weather',['isStormy']);
+    airport = new Airport(weather);
   });
   
   it('has zero planes by default', function() {
     expect(airport.planes()).toEqual([]);
   });
 
-  it('can allow planes to land', function() {
-    // land spy plane at airport
-    airport.clearForLanding(plane);
-    // set expectation
-    expect(airport.planes()).toEqual([plane]);
-  });
+  describe('under normal conditions', function() {
+    beforeEach(function() {
+      weather.isStormy.and.returnValue(false);
+    });
 
-  it('knows when weather is stormy', function() {
-    expect(airport.isStormy()).toBeFalsy();
+    it('can allow planes to land', function() {
+      // land spy plane at airport
+      airport.clearForLanding(plane);
+      // set expectation
+      expect(airport.planes()).toEqual([plane]);
+    });
+
+    it('can allow planes to take off', function() {
+      airport.clearForLanding(plane);
+      airport.clearForTakeoff(plane);
+      expect(airport.planes()).toEqual([]);
+    })
   });
 
   describe('when it\'s stormy', function() {
+    beforeEach(function() {
+      weather.isStormy.and.returnValue(true);
+    });
     
-    it('denies takeoff', function() {
-      spyOn(airport, 'isStormy').and.returnValue(true);
-      expect(function() { airport.clearForTakeoff(plane); }).toThrowError('cannot take off during storm');
+    it('denies landing', function() {
+      // spyOn(airport, 'isStormy').and.returnValue(true);
+      expect(function() { airport.clearForLanding(plane); }).toThrowError('cannot land during storm');
     });
 
-    it('denies landing', function() {
-      spyOn(airport, 'isStormy').and.returnValue(true);
-      expect(function() { airport.clearForLanding(plane); }).toThrowError('cannot land during storm');
+    it('denies takeoff', function() {
+      // spyOn(airport, 'isStormy').and.returnValue(true);
+      expect(function() { airport.clearForTakeoff(plane); }).toThrowError('cannot take off during storm');
     });
   });
 });
