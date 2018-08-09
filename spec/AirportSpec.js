@@ -21,9 +21,7 @@ describe('Airport', function() {
     });
 
     it('can allow planes to land', function() {
-      // land spy plane at airport
       airport.clearForLanding(plane);
-      // set expectation
       expect(airport.planes()).toEqual([plane]);
     });
 
@@ -40,12 +38,10 @@ describe('Airport', function() {
     });
     
     it('denies landing', function() {
-      // spyOn(airport, 'isStormy').and.returnValue(true);
       expect(function() { airport.clearForLanding(plane); }).toThrowError('cannot land during storm');
     });
 
     it('denies takeoff', function() {
-      // spyOn(airport, 'isStormy').and.returnValue(true);
       expect(function() { airport.clearForTakeoff(plane); }).toThrowError('cannot take off during storm');
     });
   });

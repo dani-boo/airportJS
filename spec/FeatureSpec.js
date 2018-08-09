@@ -3,12 +3,10 @@
 describe('Feature Test: ', function() {
   var plane;
   var airport;
-  var weather;
 
   beforeEach(function() {
     plane = new Plane();
     airport = new Airport();
-    weather = new Weather();
   });
 
   describe('when weather is awesome',function() {
@@ -34,7 +32,20 @@ describe('Feature Test: ', function() {
       plane.land(airport);
       plane.takeoff(airport);
       expect(airport.planes()).not.toContain(plane);
-    })
+    });
+    // USER STORY 5
+    // As an air traffic controller
+    // To ensure safety
+    // I want to prevent landing when the airport is full
+    it('denies landing when hangar is full', function() {
+
+    });
+
+    // USER STORY 6
+    // As the system designer
+    // So that the software can be used for many different airports
+    // I would like a default airport capacity that can be overridden as appropriate
+
   });
 
   describe('when stormy', function() {
